@@ -26,10 +26,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.io.comparator.NameFileComparator;
-import org.apache.commons.io.filefilter.DirectoryFileFilter;
-import org.apache.commons.io.filefilter.FileFilterUtils;
-import org.apache.commons.io.filefilter.HiddenFileFilter;
-import org.apache.commons.io.filefilter.IOFileFilter;
+import org.apache.commons.io.filefilter.*;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -150,6 +147,12 @@ public abstract class AbstractIteratorMojo
     private File folder;
 
     /**
+     * Choose whether to iterate through files instead of folders
+     */
+    @Parameter(defaultValue = "false")
+    private boolean iterateFiles;
+
+    /**
      * This defines the sort order for the folders which will be iterated over.
      * {@link NameFileComparator#NAME_COMPARATOR} {@link NameFileComparator#NAME_INSENSITIVE_COMPARATOR}
      * {@link NameFileComparator#NAME_INSENSITIVE_REVERSE} {@link NameFileComparator#NAME_REVERSE}
@@ -197,7 +200,14 @@ public abstract class AbstractIteratorMojo
     public List<String> getFolders()
         throws MojoExecutionException
     {
-        IOFileFilter folders = FileFilterUtils.and( HiddenFileFilter.VISIBLE, DirectoryFileFilter.DIRECTORY );
+        IOFileFilter[] filters = new IOFileFilter[2];
+        filters[0] = HiddenFileFilter.VISIBLE;
+        if (iterateFiles())
+            filters[1] = FileFileFilter.FILE;
+        else
+            filters[1] = DirectoryFileFilter.DIRECTORY;
+
+        IOFileFilter folders = FileFilterUtils.and( filters );
         IOFileFilter makeSVNAware = FileFilterUtils.makeSVNAware( folders );
         IOFileFilter makeCVSAware = FileFilterUtils.makeCVSAware( makeSVNAware );
 
@@ -333,6 +343,10 @@ public abstract class AbstractIteratorMojo
     public void setFolder( File folder )
     {
         this.folder = folder;
+    }
+
+    public boolean iterateFiles() {
+        return this.iterateFiles;
     }
 
     protected boolean isMoreThanOneSet()
