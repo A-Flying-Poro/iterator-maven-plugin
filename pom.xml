@@ -30,7 +30,7 @@
 
   <groupId>com.github.A-Flying-Poro</groupId>
   <artifactId>iterator-maven-plugin</artifactId>
-  <version>0.5.2</version>
+  <version>0.5.3</version>
   <packaging>maven-plugin</packaging>
 
   <name>The Iterator Maven Plugin.</name>

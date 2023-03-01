@@ -20,10 +20,7 @@ package com.soebes.maven.plugins.iterator;
  */
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import org.apache.commons.io.comparator.NameFileComparator;
 import org.apache.commons.io.filefilter.*;
@@ -276,7 +273,28 @@ public abstract class AbstractIteratorMojo
         {
             for ( String itemName : getFolders() )
             {
-                result.add( new ItemWithProperties( itemName, ItemWithProperties.NO_PROPERTIES ) );
+                Properties folderProperties = new Properties();
+                String fileName;
+                String fileExtension;
+
+                if (iterateFiles()) {
+                    int fileExtensionIndex = itemName.lastIndexOf('.');
+                    if (fileExtensionIndex >= 0) {
+                        fileName = itemName.substring(0, fileExtensionIndex);
+                        fileExtension = itemName.substring(fileExtensionIndex);
+                    } else {
+                        fileName = itemName;
+                        fileExtension = "";
+                    }
+                } else {
+                    fileName = itemName;
+                    fileExtension = "";
+                }
+
+                folderProperties.put("fileName", fileName);
+                folderProperties.put("fileExtension", fileExtension);
+
+                result.add( new ItemWithProperties( itemName, folderProperties ) );
             }
         }
 
