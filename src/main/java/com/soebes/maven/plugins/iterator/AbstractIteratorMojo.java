@@ -291,8 +291,8 @@ public abstract class AbstractIteratorMojo
                     fileExtension = "";
                 }
 
-                folderProperties.put("fileName", fileName);
-                folderProperties.put("fileExtension", fileExtension);
+                folderProperties.put("item.fileName", fileName);
+                folderProperties.put("item.fileExtension", fileExtension);
 
                 result.add( new ItemWithProperties( itemName, folderProperties ) );
             }
