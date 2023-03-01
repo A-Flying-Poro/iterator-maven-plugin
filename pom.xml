@@ -28,9 +28,9 @@
     <version>4.1.1</version>
   </parent>
 
-  <groupId>com.soebes.maven.plugins</groupId>
+  <groupId>com.github.A-Flying-Poro</groupId>
   <artifactId>iterator-maven-plugin</artifactId>
-  <version>0.5.2-SNAPSHOT</version>
+  <version>0.5.2</version>
   <packaging>maven-plugin</packaging>
 
   <name>The Iterator Maven Plugin.</name>
